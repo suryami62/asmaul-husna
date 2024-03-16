@@ -1,0 +1,47 @@
+﻿@inject HttpClient Http
+
+<div class="container-fluid">
+	<div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4">
+		@if (names == null)
+		{
+			<p class="text-center"><em>Memuat</em></p>
+		}
+		else
+		{
+			@foreach (var name in names)
+			{
+				<div class="col py-2">
+					<div class="card">
+						<div class="card-body text-center">
+							<h5 class="mb-0">
+								@name.Latin
+							</h5>
+							<blockquote class="mb-0 py-3 blockquote amiri-regular">
+								@name.Arab
+							</blockquote>
+							<p class="mb-0">
+								@name.Arti
+							</p>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>
+
+@code {
+	private AllahNames[]? names;
+
+	protected override async Task OnInitializedAsync()
+	{
+		names = await Http.GetFromJsonAsync<AllahNames[]>("data/asmaul-husna.json");
+	}
+
+	public class AllahNames
+	{
+		public string? Latin { get; set; }
+		public string? Arab { get; set; }
+		public string? Arti { get; set; }
+	}
+}
